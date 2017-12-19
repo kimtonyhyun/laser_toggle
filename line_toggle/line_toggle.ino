@@ -1,8 +1,8 @@
 // Pinout
-#define FRAME_CLK 45 // Currently not used
-#define LINE_CLK 47
-#define MOD_IN 49
-#define LASER_OUT 51 // Port B / Pin 2
+#define FRAME_CLK 31 // Currently not used
+#define LINE_CLK 33
+#define MOD_IN 35
+#define LASER_OUT 37
 bool mod;
 bool line;
 bool prev_line;
