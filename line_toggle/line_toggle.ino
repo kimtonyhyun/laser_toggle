@@ -2,13 +2,15 @@
 #define FRAME_CLK 45 // Currently not used
 #define LINE_CLK 47
 #define MOD_IN 49
-#define LASER_OUT 51
+#define LASER_OUT 51 // Port B / Pin 2
 bool mod;
 bool line;
 bool prev_line;
 
+#define CLR(x,y) (x&=(~(1<<y)))
+#define SET(x,y) (x|=(1<<y))
+
 // Laser stim definitions
-#define PULSE_DELAY 2 // us
 #define PULSE_ON_DURATION 10 // us
 
 void setup() {
@@ -32,10 +34,10 @@ void loop() {
 
     if (prev_line && !line) // Falling edge
     {
-      delayMicroseconds(PULSE_DELAY);
-      digitalWrite(LASER_OUT, 1);
+      // Use "SET" and "CLR" instead of digitalWrite to avoid overhead
+      SET(PORTB, 2);
       delayMicroseconds(PULSE_ON_DURATION);
-      digitalWrite(LASER_OUT, 0);
+      CLR(PORTB, 2);
     }
   }
 }
