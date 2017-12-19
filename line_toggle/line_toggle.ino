@@ -1,12 +1,14 @@
 // Pinout
-#define FRAME_CLK 31 // Currently not used
-#define LINE_CLK 33
-#define MOD_IN 35
-#define LASER_OUT 37
+#define FRAME_CLK 31 // Port C, pin 6; Currently not used
+#define LINE_CLK 33  // Port C, pin 4 
+#define MOD_IN 35    // Port C, pin 2
+#define LASER_OUT 37 // Port C, pin 0
 bool mod;
 bool line;
 bool prev_line;
 
+// Use direct port manipulation for speed
+#define READ(x,y) (x&(1<<y))
 #define CLR(x,y) (x&=(~(1<<y)))
 #define SET(x,y) (x|=(1<<y))
 
@@ -21,23 +23,22 @@ void setup() {
 }
 
 void loop() {
-  mod = digitalRead(MOD_IN);
+  mod = READ(PINC,2);
 
   if (!mod)
   {
-    digitalWrite(LASER_OUT, 0); // Keep laser off
+    CLR(PORTC,0); // Keep laser off
   }
   else
   {
     prev_line = line;
-    line = digitalRead(LINE_CLK);
+    line = READ(PINC,4);
 
     if (prev_line && !line) // Falling edge
     {
-      // Use "SET" and "CLR" instead of digitalWrite to avoid overhead
-      SET(PORTB, 2);
+      SET(PORTC,0);
       delayMicroseconds(PULSE_ON_DURATION);
-      CLR(PORTB, 2);
+      CLR(PORTC,0);
     }
   }
 }
