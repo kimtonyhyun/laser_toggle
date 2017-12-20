@@ -18,6 +18,7 @@ bool line, prev_line;
 //  - Split the full frame into 3 separate "subframes"
 #define SUBFRAME_LINE1 171
 #define SUBFRAME_LINE2 342
+#define IM_LINE_OFFSET 5
 
 #define S_IM1 0 // Image subfields 1 and 3
 #define S_IM2 1 // Image subfield 2
@@ -69,9 +70,11 @@ void loop() {
         {
           case S_IM1:
             imaging_state = S_IM2;
+            SET(PORTC,0); // Laser ON
             break;
           case S_IM2:
             imaging_state = S_IM1;
+            CLR(PORTC,0); // Laser OFF
             break;
         }
         line_idx = 1;
@@ -82,18 +85,18 @@ void loop() {
         switch (imaging_state)
         {
           case S_IM1:
-            if (line_idx < SUBFRAME_LINE1)
+            if (line_idx < SUBFRAME_LINE1 + IM_LINE_OFFSET)
               CLR(PORTC,0); // Laser OFF
-            else if (line_idx < SUBFRAME_LINE2)
+            else if (line_idx < SUBFRAME_LINE2 - IM_LINE_OFFSET)
               SET(PORTC,0); // Laser ON
             else
               CLR(PORTC,0); // Laser OFF
             break;
             
           case S_IM2:
-            if (line_idx < SUBFRAME_LINE1)
+            if (line_idx < SUBFRAME_LINE1 - IM_LINE_OFFSET)
               SET(PORTC,0); // Laser ON
-            else if (line_idx < SUBFRAME_LINE2)
+            else if (line_idx < SUBFRAME_LINE2 + IM_LINE_OFFSET)
               CLR(PORTC,0); // Laser OFF
             else
               SET(PORTC,0); // Laser ON
