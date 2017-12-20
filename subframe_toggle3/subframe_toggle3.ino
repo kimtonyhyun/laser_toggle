@@ -19,7 +19,9 @@ bool line, prev_line;
 #define SUBFRAME_LINE1 171
 #define SUBFRAME_LINE2 342
 
-int imaging_state = 0; // 0 <==> Image subfields 1 and 3; 1 <==> Image subfield 2
+#define S_IM1 0 // Image subfields 1 and 3
+#define S_IM2 1 // Image subfield 2
+int imaging_state = S_IM1;
 int line_idx = 1;
 
 bool mod_enabled = false;
@@ -55,7 +57,7 @@ void loop() {
     {
       mod_enabled = true;
       
-      laser_state = 0;
+      imaging_state = S_IM1;
       line_idx = 1;
     }
 
@@ -65,11 +67,11 @@ void loop() {
       {
         switch (imaging_state)
         {
-          case 0:
-            imaging_state = 1;
+          case S_IM1:
+            imaging_state = S_IM2;
             break;
-          case 1:
-            imaging_state = 0;
+          case S_IM2:
+            imaging_state = S_IM1;
             break;
         }
       }
@@ -78,7 +80,7 @@ void loop() {
       {
         switch (imaging_state)
         {
-          case 0: // Image subfields 1 and 3
+          case S_IM1:
             if (line_idx < SUBFRAME_LINE1)
               CLR(PORTC,0); // Laser OFF
             else if (line_idx < SUBFRAME_LINE2)
@@ -87,7 +89,7 @@ void loop() {
               CLR(PORTC,0); // Laser OFF
             break;
             
-          case 1: // Image subfield 2
+          case S_IM2:
             if (line_idx < SUBFRAME_LINE1)
               SET(PORTC,0); // Laser ON
             else if (line_idx < SUBFRAME_LINE2)
