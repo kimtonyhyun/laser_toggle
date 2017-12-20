@@ -21,9 +21,9 @@
 #define SUBFRAME3_LINE_END 512
 
 volatile int subframe_state = 1;
-volatile int laser_off_line;
-volatile int laser_on_line;
-volatile int line_idx;
+volatile int laser_off_line = SUBFRAME1_LINE_START;
+volatile int laser_on_line = SUBFRAME1_LINE_END;
+volatile int line_idx = 1;
 
 volatile bool mod_enabled = false;
 
