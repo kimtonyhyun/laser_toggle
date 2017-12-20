@@ -90,7 +90,7 @@ void setup() {
   pinMode(LASER_OUT, OUTPUT);
 
   attachInterrupt(digitalPinToInterrupt(FRAME_CLK), update_mod, RISING);
-  attachInterrupt(digitalPinToInterrupt(FRAME_CLK), update_laser_timing, FALLING);
+  //attachInterrupt(digitalPinToInterrupt(FRAME_CLK), update_laser_timing, FALLING);
   attachInterrupt(digitalPinToInterrupt(LINE_CLK), set_laser, RISING);
 }
 

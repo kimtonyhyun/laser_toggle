@@ -74,6 +74,7 @@ void loop() {
             imaging_state = S_IM1;
             break;
         }
+        line_idx = 1;
       }
 
       if (!prev_line && line) // Rising edge on LINE clk
