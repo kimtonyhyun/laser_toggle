@@ -29,7 +29,7 @@ volatile bool mod_enabled = false;
 
 void update_mod() // Called on RISING edge of FRAME clk
 {
-  if (~mod_enabled && READ(PINC,2))
+  if (~mod_enabled && READ(PINC,2)) // MOD_IN
   {
     mod_enabled = true;
 
@@ -40,11 +40,11 @@ void update_mod() // Called on RISING edge of FRAME clk
   }
 }
 
-void update_lines() // Called on FALLING edge of FRAME clk
+void update_laser_timing() // Called on FALLING edge of FRAME clk
 {
   if (mod_enabled)
   {
-    switch (subframe_state) // Update laser timing for the next frame
+    switch (subframe_state) // Update opto timing for the next frame
     {
       case 1:
         subframe_state = 2;
@@ -90,7 +90,7 @@ void setup() {
   pinMode(LASER_OUT, OUTPUT);
 
   attachInterrupt(digitalPinToInterrupt(FRAME_CLK), update_mod, RISING);
-  attachInterrupt(digitalPinToInterrupt(FRAME_CLK), update_lines, FALLING);
+  attachInterrupt(digitalPinToInterrupt(FRAME_CLK), update_laser_timing, FALLING);
   attachInterrupt(digitalPinToInterrupt(LINE_CLK), set_laser, RISING);
 }
 
