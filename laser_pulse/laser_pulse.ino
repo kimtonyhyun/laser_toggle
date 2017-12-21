@@ -1,3 +1,7 @@
+// Tony Hyun Kim
+// kimth@stanford.edu
+// Description: Send out digital pulses of defined width at regular intervals
+
 // Pinout
 #define USER_INPUT 52
 #define OUTPUT_TO_LASER 53
