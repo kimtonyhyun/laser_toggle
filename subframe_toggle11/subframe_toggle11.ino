@@ -15,22 +15,18 @@ bool line, prev_line;
 
 // Hard-code subframe parameters. Here, we:
 //  - Assume that the full frame is 512 lines
-//  - Split the full frame into N=15 separate "subframes", there are N-1 "lines" where the
+//  - Split the full frame into N=11 separate "subframes", there are N-1 "lines" where the
 //      laser state will transition
-#define SUBFRAME_LINE1 35
-#define SUBFRAME_LINE2 69
-#define SUBFRAME_LINE3 103
-#define SUBFRAME_LINE4 137
-#define SUBFRAME_LINE5 171
-#define SUBFRAME_LINE6 205
-#define SUBFRAME_LINE7 239
-#define SUBFRAME_LINE8 273
-#define SUBFRAME_LINE9 307
-#define SUBFRAME_LINE10 341
-#define SUBFRAME_LINE11 375
-#define SUBFRAME_LINE12 409
-#define SUBFRAME_LINE13 443
-#define SUBFRAME_LINE14 447
+#define SUBFRAME_LINE1 47
+#define SUBFRAME_LINE2 93
+#define SUBFRAME_LINE3 139
+#define SUBFRAME_LINE4 185
+#define SUBFRAME_LINE5 231
+#define SUBFRAME_LINE6 277
+#define SUBFRAME_LINE7 323
+#define SUBFRAME_LINE8 369
+#define SUBFRAME_LINE9 415
+#define SUBFRAME_LINE10 461
 #define IM_LINE_OFFSET 2
 
 // Amount of time to delay for transition of laser at the end of frame. This
@@ -124,14 +120,6 @@ void loop() {
             CLR(PORTC,0);
           else if (line_idx < SUBFRAME_LINE10 - IM_LINE_OFFSET)
             SET(PORTC,0);
-          else if (line_idx < SUBFRAME_LINE11 + IM_LINE_OFFSET)
-            CLR(PORTC,0);
-          else if (line_idx < SUBFRAME_LINE12 - IM_LINE_OFFSET)
-            SET(PORTC,0);
-          else if (line_idx < SUBFRAME_LINE13 + IM_LINE_OFFSET)
-            CLR(PORTC,0);
-          else if (line_idx < SUBFRAME_LINE14 - IM_LINE_OFFSET)
-            SET(PORTC,0);
           else
             CLR(PORTC,0); // Laser OFF
           break;
@@ -156,14 +144,6 @@ void loop() {
           else if (line_idx < SUBFRAME_LINE9 - IM_LINE_OFFSET)
             SET(PORTC,0);
           else if (line_idx < SUBFRAME_LINE10 + IM_LINE_OFFSET)
-            CLR(PORTC,0);
-          else if (line_idx < SUBFRAME_LINE11 - IM_LINE_OFFSET)
-            SET(PORTC,0);
-          else if (line_idx < SUBFRAME_LINE12 + IM_LINE_OFFSET)
-            CLR(PORTC,0);
-          else if (line_idx < SUBFRAME_LINE13 - IM_LINE_OFFSET)
-            SET(PORTC,0);
-          else if (line_idx < SUBFRAME_LINE14 + IM_LINE_OFFSET)
             CLR(PORTC,0);
           else
             SET(PORTC,0); // Laser ON
