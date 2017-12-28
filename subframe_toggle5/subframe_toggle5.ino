@@ -15,12 +15,18 @@ bool line, prev_line;
 
 // Hard-code subframe parameters. Here, we:
 //  - Assume that the full frame is 512 lines
-//  - Split the full frame into 5 separate "subframes"
+//  - Split the full frame into N=5 separate "subframes", there are N-1 "lines" where the
+//      laser state will transition
 #define SUBFRAME_LINE1 103
 #define SUBFRAME_LINE2 205
 #define SUBFRAME_LINE3 307
 #define SUBFRAME_LINE4 409
-#define IM_LINE_OFFSET 5
+#define IM_LINE_OFFSET 2
+
+// Amount of time to delay for transition of laser at the end of frame. This
+//  is useful for dual-site imaging, where the slave microscope frames lag the
+//  master microscope frames by a few lines.
+#define TOGGLE_DELAY 300 // us
 
 #define S_IM1 0 // Image subfields 1, 3, 5
 #define S_IM2 1 // Image subfield 2, 4
@@ -65,12 +71,15 @@ void loop() {
     if (prev_frame && !frame) // Falling edge on FRAME clk
     {
       mod_enabled = mod;
+
+      delayMicroseconds(TOGGLE_DELAY);
       
       switch (imaging_state)
       {
         case S_IM1:
           imaging_state = S_IM2;
-          SET(PORTC,0); // Laser ON
+          if (mod_enabled)
+            SET(PORTC,0); // Laser ON
           break;
         case S_IM2:
           imaging_state = S_IM1;
